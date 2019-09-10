@@ -1,5 +1,9 @@
 repositories {
-	maven("https://repo.velocitypowered.com/releases")
+	maven("https://repo.velocitypowered.com/releases") {
+		content {
+			includeGroup("com.velocitypowered")
+		}
+	}
 }
 
 dependencies {
