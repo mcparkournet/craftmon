@@ -18,7 +18,7 @@ subprojects {
 	}
 
 	dependencies {
-		compileOnly("org.jetbrains:annotations:17.0.0")
+		compileOnly("org.jetbrains:annotations:18.0.0")
 	}
 
 	java {

@@ -9,5 +9,5 @@ repositories {
 
 dependencies {
 	api(project(":craftmon-core"))
-	compileOnly("io.github.waterfallmc:waterfall-api:1.14-SNAPSHOT")
+	compileOnly("io.github.waterfallmc:waterfall-api:1.15-SNAPSHOT")
 }

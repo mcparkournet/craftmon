@@ -9,5 +9,5 @@ repositories {
 
 dependencies {
 	api(project(":craftmon-core"))
-	compileOnly("com.destroystokyo.paper:paper-api:1.14.4-R0.1-SNAPSHOT")
+	compileOnly("com.destroystokyo.paper:paper-api:1.15.1-R0.1-SNAPSHOT")
 }
