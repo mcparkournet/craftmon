@@ -31,6 +31,11 @@ public class PermissionBuilder {
 
 	private List<String> nodes = new ArrayList<>(2);
 
+	public PermissionBuilder from(Permission permission) {
+		List<String> nodes = permission.getNodes();
+		return nodes(nodes);
+	}
+
 	public PermissionBuilder nodes(String... nodes) {
 		List<String> nodesList = List.of(nodes);
 		return nodes(nodesList);

@@ -35,7 +35,7 @@ public class Permission {
 		this.nodes = nodes;
 	}
 
-	public String getPermission() {
+	public String getName() {
 		return String.join(".", this.nodes);
 	}
 
@@ -65,5 +65,9 @@ public class Permission {
 
 	public boolean isEmpty() {
 		return this.nodes.isEmpty();
+	}
+
+	List<String> getNodes() {
+		return List.copyOf(this.nodes);
 	}
 }
