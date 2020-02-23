@@ -8,5 +8,5 @@ repositories {
 
 dependencies {
 	api(project(":craftmon-core"))
-	compileOnly("com.velocitypowered:velocity-api:1.0.4")
+	compileOnly("com.velocitypowered:velocity-api:1.0.5")
 }
