@@ -12,6 +12,6 @@ repositories {
 }
 
 dependencies {
-    implementation("net.mcparkour:craftmon-core:1.0.5")
+    implementation("net.mcparkour:craftmon-core:1.0.6")
 }
 ```

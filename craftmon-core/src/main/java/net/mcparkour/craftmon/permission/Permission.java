@@ -33,6 +33,8 @@ import java.util.Objects;
 
 public final class Permission implements Iterable<String> {
 
+	private static final Permission EMPTY_PERMISSION = new Permission();
+
 	private Deque<String> nodes;
 
 	public static PermissionBuilder builder() {
@@ -41,6 +43,10 @@ public final class Permission implements Iterable<String> {
 
 	public static PermissionBuilder builder(Permission permission) {
 		return new PermissionBuilder(permission);
+	}
+
+	public static Permission empty() {
+		return EMPTY_PERMISSION;
 	}
 
 	public static Permission of(String node) {
@@ -57,6 +63,10 @@ public final class Permission implements Iterable<String> {
 	public static Permission of(Collection<String> nodes) {
 		Deque<String> deque = new LinkedList<>(nodes);
 		return new Permission(deque);
+	}
+
+	private Permission() {
+		this(new LinkedList<>());
 	}
 
 	Permission(Deque<String> nodes) {
@@ -151,6 +161,6 @@ public final class Permission implements Iterable<String> {
 
 	@Override
 	public String toString() {
-		return String.join(".", this.nodes);
+		return getName();
 	}
 }
