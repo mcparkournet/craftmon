@@ -24,39 +24,96 @@
 
 package net.mcparkour.craftmon.permission;
 
+import java.util.Collection;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
+import java.util.Objects;
 
-public class Permission {
+public final class Permission implements Iterable<String> {
 
-	private List<String> nodes;
+	private Deque<String> nodes;
 
-	public Permission(List<String> nodes) {
+	public static PermissionBuilder builder() {
+		return new PermissionBuilder();
+	}
+
+	public static PermissionBuilder builder(Permission permission) {
+		return new PermissionBuilder(permission);
+	}
+
+	public static Permission of(String node) {
+		Deque<String> deque = new LinkedList<>();
+		deque.add(node);
+		return new Permission(deque);
+	}
+
+	public static Permission of(String... nodes) {
+		List<String> nodesList = List.of(nodes);
+		return of(nodesList);
+	}
+
+	public static Permission of(Collection<String> nodes) {
+		Deque<String> deque = new LinkedList<>(nodes);
+		return new Permission(deque);
+	}
+
+	Permission(Deque<String> nodes) {
 		this.nodes = nodes;
+	}
+
+	@Override
+	public Iterator<String> iterator() {
+		return this.nodes.iterator();
+	}
+
+	public Permission with(String node) {
+		return new PermissionBuilder(this)
+			.node(node)
+			.build();
+	}
+
+	public Permission with(String... nodes) {
+		return new PermissionBuilder(this)
+			.nodes(nodes)
+			.build();
+	}
+
+	public Permission with(Collection<String> nodes) {
+		return new PermissionBuilder(this)
+			.nodes(nodes)
+			.build();
+	}
+
+	public Permission with(Permission permission) {
+		return new PermissionBuilder(this)
+			.with(permission)
+			.build();
+	}
+
+	public Permission withoutFirst() {
+		Deque<String> nodes = getNodes();
+		nodes.removeFirst();
+		return new Permission(nodes);
+	}
+
+	public Permission withoutLast() {
+		Deque<String> nodes = getNodes();
+		nodes.removeLast();
+		return new Permission(nodes);
 	}
 
 	public String getName() {
 		return String.join(".", this.nodes);
 	}
 
-	@Nullable
 	public String getFirstNode() {
-		return getNode(0);
+		return this.nodes.getFirst();
 	}
 
-	@Nullable
 	public String getLastNode() {
-		int size = getNodesCount();
-		return getNode(size - 1);
-	}
-
-	@Nullable
-	public String getNode(int index) {
-		int size = getNodesCount();
-		if (size < index + 1) {
-			return null;
-		}
-		return this.nodes.get(index);
+		return this.nodes.getLast();
 	}
 
 	public int getNodesCount() {
@@ -67,7 +124,33 @@ public class Permission {
 		return this.nodes.isEmpty();
 	}
 
-	List<String> getNodes() {
+	public List<String> getNodesList() {
 		return List.copyOf(this.nodes);
+	}
+
+	public Deque<String> getNodes() {
+		return new LinkedList<>(this.nodes);
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object) {
+			return true;
+		}
+		if (!(object instanceof Permission)) {
+			return false;
+		}
+		Permission that = (Permission) object;
+		return Objects.equals(this.nodes, that.nodes);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.nodes);
+	}
+
+	@Override
+	public String toString() {
+		return String.join(".", this.nodes);
 	}
 }

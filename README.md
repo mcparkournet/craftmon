@@ -6,12 +6,12 @@ Set of utilities for Minecraft related software.
 
 ## Usage
 
-```java
+```kotlin
 repositories {
     jcenter()
 }
 
 dependencies {
-    implementation("net.mcparkour:craftmon-core:1.0.0")
+    implementation("net.mcparkour:craftmon-core:1.0.5")
 }
 ```

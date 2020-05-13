@@ -24,15 +24,29 @@
 
 package net.mcparkour.craftmon.permission;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
-public class PermissionBuilder {
+public final class PermissionBuilder {
 
-	private List<String> nodes = new ArrayList<>(2);
+	private Deque<String> nodes;
+
+	PermissionBuilder() {
+		this(new LinkedList<>());
+	}
+
+	PermissionBuilder(Permission permission) {
+		this(permission.getNodes());
+	}
+
+	private PermissionBuilder(Deque<String> nodes) {
+		this.nodes = nodes;
+	}
 
 	public PermissionBuilder with(Permission permission) {
-		List<String> nodes = permission.getNodes();
+		List<String> nodes = permission.getNodesList();
 		return nodes(nodes);
 	}
 
@@ -41,7 +55,7 @@ public class PermissionBuilder {
 		return nodes(nodesList);
 	}
 
-	public PermissionBuilder nodes(List<String> nodes) {
+	public PermissionBuilder nodes(Collection<String> nodes) {
 		this.nodes.addAll(nodes);
 		return this;
 	}
@@ -52,7 +66,6 @@ public class PermissionBuilder {
 	}
 
 	public Permission build() {
-		List<String> nodesCopy = List.copyOf(this.nodes);
-		return new Permission(nodesCopy);
+		return new Permission(this.nodes);
 	}
 }
