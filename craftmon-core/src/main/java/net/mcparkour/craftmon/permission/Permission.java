@@ -102,13 +102,37 @@ public final class Permission implements Iterable<String> {
 			.build();
 	}
 
-	public Permission withoutFirst() {
+	public Permission withPrefix(String prefix) {
+		if (isEmpty()) {
+			return this;
+		}
+		Deque<String> nodes = getNodes();
+		nodes.addFirst(prefix);
+		return new Permission(nodes);
+	}
+
+	public Permission withSuffix(String suffix) {
+		if (isEmpty()) {
+			return this;
+		}
+		Deque<String> nodes = getNodes();
+		nodes.addLast(suffix);
+		return new Permission(nodes);
+	}
+
+	public Permission withoutPrefix() {
+		if (isEmpty()) {
+			return this;
+		}
 		Deque<String> nodes = getNodes();
 		nodes.removeFirst();
 		return new Permission(nodes);
 	}
 
-	public Permission withoutLast() {
+	public Permission withoutSuffix() {
+		if (isEmpty()) {
+			return this;
+		}
 		Deque<String> nodes = getNodes();
 		nodes.removeLast();
 		return new Permission(nodes);
