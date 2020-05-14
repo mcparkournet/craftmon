@@ -26,165 +26,57 @@ package net.mcparkour.craftmon.permission;
 
 import java.util.Collection;
 import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
-public final class Permission implements Iterable<String> {
+public interface Permission extends Iterable<String> {
 
-	private static final Permission EMPTY_PERMISSION = new Permission();
-
-	private Deque<String> nodes;
-
-	public static PermissionBuilder builder() {
-		return new PermissionBuilder();
+	static Permission empty() {
+		return PermissionFactory.empty();
 	}
 
-	public static PermissionBuilder builder(Permission permission) {
-		return new PermissionBuilder(permission);
+	static Permission fromName(String name) {
+		return PermissionFactory.fromName(name);
 	}
 
-	public static Permission empty() {
-		return EMPTY_PERMISSION;
+	static Permission of(String node) {
+		return PermissionFactory.of(node);
 	}
 
-	public static Permission of(String node) {
-		Deque<String> deque = new LinkedList<>();
-		deque.add(node);
-		return new Permission(deque);
+	static Permission of(String... nodes) {
+		return PermissionFactory.of(nodes);
 	}
 
-	public static Permission of(String... nodes) {
-		List<String> nodesList = List.of(nodes);
-		return of(nodesList);
+	static Permission of(Collection<String> nodes) {
+		return PermissionFactory.of(nodes);
 	}
 
-	public static Permission of(Collection<String> nodes) {
-		Deque<String> deque = new LinkedList<>(nodes);
-		return new Permission(deque);
-	}
+	Permission withFirst(String node);
 
-	private Permission() {
-		this(new LinkedList<>());
-	}
+	Permission withFirst(String... nodes);
 
-	Permission(Deque<String> nodes) {
-		this.nodes = nodes;
-	}
+	Permission withFirst(Permission permission);
 
-	@Override
-	public Iterator<String> iterator() {
-		return this.nodes.iterator();
-	}
+	Permission withFirst(Collection<String> nodes);
 
-	public Permission with(String node) {
-		return new PermissionBuilder(this)
-			.node(node)
-			.build();
-	}
+	Permission withLast(String node);
 
-	public Permission with(String... nodes) {
-		return new PermissionBuilder(this)
-			.nodes(nodes)
-			.build();
-	}
+	Permission withLast(String... nodes);
 
-	public Permission with(Collection<String> nodes) {
-		return new PermissionBuilder(this)
-			.nodes(nodes)
-			.build();
-	}
+	Permission withLast(Permission permission);
 
-	public Permission with(Permission permission) {
-		return new PermissionBuilder(this)
-			.with(permission)
-			.build();
-	}
+	Permission withLast(Collection<String> nodes);
 
-	public Permission withPrefix(String prefix) {
-		if (isEmpty()) {
-			return this;
-		}
-		Deque<String> nodes = getNodes();
-		nodes.addFirst(prefix);
-		return new Permission(nodes);
-	}
+	String getName();
 
-	public Permission withSuffix(String suffix) {
-		if (isEmpty()) {
-			return this;
-		}
-		Deque<String> nodes = getNodes();
-		nodes.addLast(suffix);
-		return new Permission(nodes);
-	}
+	String getFirstNode();
 
-	public Permission withoutPrefix() {
-		if (isEmpty()) {
-			return this;
-		}
-		Deque<String> nodes = getNodes();
-		nodes.removeFirst();
-		return new Permission(nodes);
-	}
+	String getLastNode();
 
-	public Permission withoutSuffix() {
-		if (isEmpty()) {
-			return this;
-		}
-		Deque<String> nodes = getNodes();
-		nodes.removeLast();
-		return new Permission(nodes);
-	}
+	int getNodesCount();
 
-	public String getName() {
-		return String.join(".", this.nodes);
-	}
+	boolean isEmpty();
 
-	public String getFirstNode() {
-		return this.nodes.getFirst();
-	}
+	List<String> getNodesList();
 
-	public String getLastNode() {
-		return this.nodes.getLast();
-	}
-
-	public int getNodesCount() {
-		return this.nodes.size();
-	}
-
-	public boolean isEmpty() {
-		return this.nodes.isEmpty();
-	}
-
-	public List<String> getNodesList() {
-		return List.copyOf(this.nodes);
-	}
-
-	public Deque<String> getNodes() {
-		return new LinkedList<>(this.nodes);
-	}
-
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) {
-			return true;
-		}
-		if (!(object instanceof Permission)) {
-			return false;
-		}
-		Permission that = (Permission) object;
-		return Objects.equals(this.nodes, that.nodes);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(this.nodes);
-	}
-
-	@Override
-	public String toString() {
-		return getName();
-	}
+	Deque<String> getNodes();
 }
